@@ -3,3 +3,8 @@ https://sonsnotation.blogspot.com/2020/10/5-adversarial-search-minimax-pruning.h
 
 알파고 : 몬테카를로 트리 탐색
 https://www.itworld.co.kr/news/98391
+
+
+8! = 40320
+15! = 1,307,674,368,000
+24! = 6.204484017332394e+23

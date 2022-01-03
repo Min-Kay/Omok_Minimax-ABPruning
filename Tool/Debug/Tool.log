@@ -1,4 +1,6 @@
-﻿  ToolView.cpp
-C:\Users\chris\OneDrive\바탕 화면\프로젝트\Omok\Tool\ToolView.cpp(304,62): warning C4244: '인수': 'LONG'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\chris\OneDrive\바탕 화면\프로젝트\Omok\Tool\ToolView.cpp(304,53): warning C4244: '인수': 'LONG'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+﻿  Omok.cpp
+C:\Users\chris\OneDrive\바탕 화면\프로젝트\Omok\Tool\Omok.cpp(49,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\chris\OneDrive\바탕 화면\프로젝트\Omok\Tool\Omok.cpp(61,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\chris\OneDrive\바탕 화면\프로젝트\Omok\Tool\Omok.cpp(330,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\chris\OneDrive\바탕 화면\프로젝트\Omok\Tool\Omok.cpp(388,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
   Tool.vcxproj -> C:\Users\chris\OneDrive\바탕 화면\프로젝트\Omok\Debug\Tool.exe

@@ -317,8 +317,8 @@ SCOREPOS Omok::Minimax(char board[BOARD_SIZE_Y][BOARD_SIZE_X], char marker, int 
 	++count;
 
 	if (Board_Full(board) || DRAW != Check_Marker_State(board, AI_MARKER) || // 승무패 정해짐
-		depth > 4 || // 깊이로 조절
-		(depth != 0 && (Check_Marker_Score(board, AI_MARKER) > Check_Marker_Score(board, PLAYER_MARKER)))) // 승무패가 결정 나지 않았을때, AI가 점수 더 높을 경우
+		depth == 5 || // 깊이로 조절 - 자원제한 방식
+		(depth != 0 && (Check_Marker_Score(board, AI_MARKER) > Check_Marker_Score(board, PLAYER_MARKER)))) // 승무패가 결정 나지 않았을때, AI가 점수 더 높을 경우 - 몬테카를로 트리 탐색의 가치 판단
 	{
 		best_score = (DRAW != Check_Marker_State(board, AI_MARKER)) ? Check_Marker_State(board, AI_MARKER) : Check_Marker_Score(board, AI_MARKER) - Check_Marker_Score(board, PLAYER_MARKER); // 승패 여부에 따른 점수 반환
 		return make_pair(best_score, best_move);
@@ -345,7 +345,7 @@ SCOREPOS Omok::Minimax(char board[BOARD_SIZE_Y][BOARD_SIZE_X], char marker, int 
 					break;
 			}
 		}
-		else
+		else if(marker == PLAYER_MARKER)
 		{
 			SCORE score = Minimax(board, AI_MARKER, depth + 1, alpha, beta).first;
 			if (best_score > score)
@@ -375,8 +375,8 @@ SCOREPOS Omok::MinimaxNon(char board[BOARD_SIZE_Y][BOARD_SIZE_X], char marker, i
 	++count;
 
 	if (Board_Full(board) || DRAW != Check_Marker_State(board, AI_MARKER) || // 승무패 정해짐
-		depth > 4 || // 깊이로 조절
-		(depth != 0 && (Check_Marker_Score(board, AI_MARKER) > Check_Marker_Score(board, PLAYER_MARKER)))) // 승무패가 안나고 AI가 점수 더 높을 경우
+		depth == 5 || // 깊이로 조절 - 자원제한 방식
+		(depth != 0 && (Check_Marker_Score(board, AI_MARKER) > Check_Marker_Score(board, PLAYER_MARKER)))) // 승무패가 결정 나지 않았을때, AI가 점수 더 높을 경우 - 몬테카를로 트리 탐색의 가치 판단
 	{
 		best_score = (DRAW != Check_Marker_State(board, AI_MARKER)) ? Check_Marker_State(board, AI_MARKER) : Check_Marker_Score(board, AI_MARKER) - Check_Marker_Score(board, PLAYER_MARKER); // 승패 여부에 따른 점수 반환
 		return make_pair(best_score, best_move);
