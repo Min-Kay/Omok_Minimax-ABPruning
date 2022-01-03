@@ -209,22 +209,16 @@ bool Omok::ScoreAdder(SCORE& score, int count, int op_count)
 		score = WIN;
 		return true;
 	case 4:
-		/*if (op_count > 0)
-			score += 1;*/
 		if (op_count == 0)
 			score += 10;
 		break;
 	case 3:
-		/*if (op_count > 0)
-			score += 1;
-		else */if (op_count == 0)
-	score += 5;
+		if (op_count == 0)
+			score += 5;
 		break;
 	case 2:
-		/*if (op_count >= 2)
+		if (op_count == 0)
 			score += 1;
-		else */if (op_count == 0)
-	score += 1;
 		break;
 	case 1:
 		if (op_count == 2)
@@ -318,18 +312,15 @@ SCORE Omok::Check_Marker_Score(char board[BOARD_SIZE_Y][BOARD_SIZE_X], char mark
 
 SCOREPOS Omok::Minimax(char board[BOARD_SIZE_Y][BOARD_SIZE_X], char marker, int depth, int alpha, int beta)
 {
-	STATE best_score = (marker == AI_MARKER) ? LOSE : WIN;
-	POS best_move = POS(DEFAULT, DEFAULT);
+	STATE best_score = (marker == AI_MARKER) ? LOSE : WIN; // 기본 점수 설정
+	POS best_move = POS(DEFAULT, DEFAULT); 
 	++count;
 
 	if (Board_Full(board) || DRAW != Check_Marker_State(board, AI_MARKER) || // 승무패 정해짐
 		depth > 4 || // 깊이로 조절
-		(depth != 0 && (Check_Marker_Score(board, AI_MARKER) > Check_Marker_Score(board, PLAYER_MARKER)))) // 승무패가 안나고 AI가 점수 더 높을 경우
+		(depth != 0 && (Check_Marker_Score(board, AI_MARKER) > Check_Marker_Score(board, PLAYER_MARKER)))) // 승무패가 결정 나지 않았을때, AI가 점수 더 높을 경우
 	{
-		if (DRAW != Check_Marker_State(board, AI_MARKER))
-			return make_pair(Check_Marker_State(board, AI_MARKER), best_move);
-
-		best_score = Check_Marker_Score(board, AI_MARKER) - Check_Marker_Score(board, PLAYER_MARKER);
+		best_score = (DRAW != Check_Marker_State(board, AI_MARKER)) ? Check_Marker_State(board, AI_MARKER) : Check_Marker_Score(board, AI_MARKER) - Check_Marker_Score(board, PLAYER_MARKER); // 승패 여부에 따른 점수 반환
 		return make_pair(best_score, best_move);
 	}
 
@@ -370,7 +361,7 @@ SCOREPOS Omok::Minimax(char board[BOARD_SIZE_Y][BOARD_SIZE_X], char marker, int 
 
 		board[curr.first][curr.second] = NONE;
 
-		if (best_move == POS(-1, -1))
+		if (best_move == POS(DEFAULT, DEFAULT))
 			best_move = curr;
 	}
 
@@ -387,10 +378,7 @@ SCOREPOS Omok::MinimaxNon(char board[BOARD_SIZE_Y][BOARD_SIZE_X], char marker, i
 		depth > 4 || // 깊이로 조절
 		(depth != 0 && (Check_Marker_Score(board, AI_MARKER) > Check_Marker_Score(board, PLAYER_MARKER)))) // 승무패가 안나고 AI가 점수 더 높을 경우
 	{
-		if (DRAW != Check_Marker_State(board, AI_MARKER))
-			return make_pair(Check_Marker_State(board, AI_MARKER), best_move);
-
-		best_score = Check_Marker_Score(board, AI_MARKER) - Check_Marker_Score(board, PLAYER_MARKER);
+		best_score = (DRAW != Check_Marker_State(board, AI_MARKER)) ? Check_Marker_State(board, AI_MARKER) : Check_Marker_Score(board, AI_MARKER) - Check_Marker_Score(board, PLAYER_MARKER); // 승패 여부에 따른 점수 반환
 		return make_pair(best_score, best_move);
 	}
 
@@ -423,7 +411,7 @@ SCOREPOS Omok::MinimaxNon(char board[BOARD_SIZE_Y][BOARD_SIZE_X], char marker, i
 
 		board[curr.first][curr.second] = NONE;
 
-		if (best_move == POS(-1, -1))
+		if (best_move == POS(DEFAULT, DEFAULT))
 			best_move = curr;
 	}
 

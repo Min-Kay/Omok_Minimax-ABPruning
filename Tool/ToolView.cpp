@@ -27,7 +27,12 @@ TCHAR		aiScore[100] = L"";
 TCHAR		playerScore[100] = L"";
 TCHAR		nonABText[100] = L"";
 TCHAR		aBText[100] = L"";
-RECT rect, rect1, rect2, rect3;
+TCHAR		nonABTimerText[100] = L"";
+TCHAR		aBTimerText[100] = L"";
+
+RECT rect, rect1, rect2, rect3,rect4,rect5;
+float nonABTimer = 0.f;
+float ABTimer = 0.f;
 int nonAB = 0;
 int AB = 0;
 bool firstTurn = true;
@@ -126,12 +131,18 @@ void CToolView::OnDraw(CDC* /*pDC*/)
 	swprintf_s(playerScore, L"PLAYER : %d", omok.Check_Marker_Score(board, PLAYER_MARKER));
 	CDevice::GetInstance()->Get_Font()->DrawText(NULL, playerScore, lstrlen(playerScore), &rect1, DT_CENTER | DT_TOP, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
-	swprintf_s(nonABText, L"NONAB : %d", nonAB);
+	swprintf_s(nonABText, L"MINIMAX 탐색 수 : %d", nonAB);
 	CDevice::GetInstance()->Get_Font()->DrawText(NULL, nonABText, lstrlen(nonABText), &rect2, DT_CENTER | DT_TOP, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
-	swprintf_s(aBText, L"AB : %d",AB);
+	swprintf_s(aBText, L"AB 탐색 수: %d",AB);
 	CDevice::GetInstance()->Get_Font()->DrawText(NULL, aBText, lstrlen(aBText), &rect3, DT_CENTER | DT_TOP, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-	
+
+	swprintf_s(nonABTimerText, L"MINIMAX 시간 : %.3f", nonABTimer);
+	CDevice::GetInstance()->Get_Font()->DrawText(NULL, nonABTimerText, lstrlen(nonABTimerText), &rect4, DT_CENTER | DT_TOP, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+
+	swprintf_s(aBTimerText, L"AB 시간 : %.3f", ABTimer);
+	CDevice::GetInstance()->Get_Font()->DrawText(NULL, aBTimerText, lstrlen(aBTimerText), &rect5, DT_CENTER | DT_TOP, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+
 	CDevice::GetInstance()->Render_End();
 
 }
@@ -243,6 +254,8 @@ void CToolView::OnInitialUpdate()
 	SetRectEmpty(&rect1);
 	SetRectEmpty(&rect2);
 	SetRectEmpty(&rect3);
+	SetRectEmpty(&rect4);
+	SetRectEmpty(&rect5);
 
 	rect.left = 0;
 	rect.right = 200;
@@ -263,6 +276,17 @@ void CToolView::OnInitialUpdate()
 	rect3.right = 700;
 	rect3.top = 400;
 	rect3.bottom = 500;
+
+	rect4.left = 300;
+	rect4.right = 700;
+	rect4.top = 350;
+	rect4.bottom = 450;
+
+	rect5.left = 300;
+	rect5.right = 700;
+	rect5.top = 450;
+	rect5.bottom = 550;
+
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 }
 
@@ -304,10 +328,17 @@ void CToolView::OnLButtonDown(UINT nFlags, CPoint point)
 	}
 	else
 	{
+		DWORD timer = GetTickCount();
 		SCOREPOS aiMoveNon = omok.MinimaxNon(board, AI_MARKER, DEPTH);
+		DWORD tick = GetTickCount();
+		nonABTimer = (tick - timer) / 1000.f;
 		nonAB = omok.Get_Count();
 		omok.Set_Count();
+
+		timer = GetTickCount();
 		SCOREPOS aiMove = omok.Minimax(board, AI_MARKER, DEPTH, LOSE, WIN);
+		tick = GetTickCount();
+		ABTimer = (tick - timer) / 1000.f;
 		AB = omok.Get_Count();
 		omok.Set_Count();
 
